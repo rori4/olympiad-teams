@@ -10,6 +10,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'fa fa-medal',
     children: [
       {
+        title: 'Everyone',
+        link: '/students',
+      },
+      {
         title: 'Mathematics',
         link: '/',
       },

@@ -5,6 +5,11 @@
     display: block;
     animation: fade 1s;
 
+    .error-message {
+      color: red;
+      margin-top: 0.5rem;
+    }
+
     @keyframes fade {
       from {
         opacity: 0;

@@ -6,9 +6,12 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { StudentsTableComponent } from './students-table/students-table.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
+  StudentsTableComponent,
 ];
 
 @NgModule({
@@ -18,6 +21,7 @@ const PAGES_COMPONENTS = [
     DashboardModule,
     ECommerceModule,
     MiscellaneousModule,
+    Ng2SmartTableModule,
   ],
   declarations: [
     ...PAGES_COMPONENTS,

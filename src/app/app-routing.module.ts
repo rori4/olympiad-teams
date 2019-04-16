@@ -1,4 +1,4 @@
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import {
   NbAuthComponent,
@@ -10,7 +10,6 @@ import {
 } from '@nebular/auth';
 
 const routes: Routes = [
-  { path: '', loadChildren: 'app/pages/pages.module#PagesModule' },
   {
     path: 'auth',
     component: NbAuthComponent,
@@ -41,11 +40,11 @@ const routes: Routes = [
       },
     ],
   },
+  { path: '', loadChildren: 'app/pages/pages.module#PagesModule' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

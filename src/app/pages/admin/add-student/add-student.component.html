@@ -1,4 +1,4 @@
-<form class="row">
+<form class="row" [formGroup]="form" (submit)="addStudent()">
   <div class="col-md-6">
     <nb-card>
       <nb-card-body>
@@ -18,34 +18,86 @@
       <nb-card-header>Basic Information</nb-card-header>
       <nb-card-body>
         <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" class="form-control" id="fullName" placeholder="Full Name" />
+          <label for="fullName">Full Name (required)</label>
+          <input
+            nbInput
+            type="text"
+            class="form-control"
+            formControlName="fullName"
+            id="fullName"
+            placeholder="Full Name"
+            [status]="f.fullName.invalid && f.fullName.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.fullName.invalid && f.fullName.touched">
+            <p class="error-message" *ngIf="f.fullName.errors?.required">
+              Name is required!
+            </p>
+          </ng-container>
         </div>
         <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="Email" />
+          <label for="email">Email address (required)</label>
+          <input
+            nbInput
+            type="email"
+            class="form-control"
+            formControlName="email"
+            id="email"
+            placeholder="Email"
+            [status]="f.email.invalid && f.email.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.email.invalid && f.email.touched">
+            <p class="error-message" *ngIf="f.email.errors?.required">
+              Email is required!
+            </p>
+          </ng-container>
+          <ng-container *ngIf="f.email.invalid && f.email.touched">
+            <p class="error-message" *ngIf="f.email.errors?.pattern">
+              Please provide a valid email!
+            </p>
+          </ng-container>
         </div>
       </nb-card-body>
+      <nb-card-footer>
+        <h6 class="card-subtitle mb-2 text-muted">The default password of the user will be "12345678"</h6>
+      </nb-card-footer>
     </nb-card>
     <nb-card>
       <nb-card-header>Work & Education Information</nb-card-header>
       <nb-card-body>
         <div class="form-group">
           <label for="school">School</label>
-          <input type="text" class="form-control" id="school" placeholder="School" />
+          <input type="text" class="form-control" formControlName="school" id="school" placeholder="School" />
         </div>
         <div class="form-group">
           <label for="period">Education Period</label>
-          <input nbInput placeholder="Education Period" [nbDatepicker]="rangepicker" id="period" />
+          <input
+            nbInput
+            placeholder="Education Period"
+            formControlName="educationPeriod"
+            [nbDatepicker]="rangepicker"
+            id="period"
+            [status]="f.educationPeriod.invalid && f.educationPeriod.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.educationPeriod.invalid && f.educationPeriod.touched">
+            <p class="error-message" *ngIf="f.educationPeriod.errors?.nbDatepickerParse">
+              Please provide a valid date range if any!
+            </p>
+          </ng-container>
           <nb-rangepicker #rangepicker></nb-rangepicker>
         </div>
         <div class="form-group">
           <label for="university">University</label>
-          <input type="text" class="form-control" id="university" placeholder="University" />
+          <input
+            type="text"
+            class="form-control"
+            formControlName="university"
+            id="university"
+            placeholder="University"
+          />
         </div>
         <div class="form-group">
           <label for="work">Work</label>
-          <input type="text" class="form-control" id="work" placeholder="Work" />
+          <input type="text" class="form-control" formControlName="work" id="work" placeholder="Work" />
         </div>
       </nb-card-body>
     </nb-card>
@@ -56,30 +108,69 @@
       <nb-card-body>
         <div class="form-group">
           <label for="facebook">Facebook</label>
-          <input type="text" class="form-control" id="facebook" placeholder="Facebook" />
+          <input
+            nbInput
+            type="text"
+            class="form-control"
+            formControlName="facebook"
+            id="facebook"
+            placeholder="Facebook"
+            [status]="f.facebook.invalid && f.facebook.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.facebook.invalid && f.facebook.touched">
+            <p class="error-message" *ngIf="f.facebook.errors?.pattern">
+              Please provide a valid Facebook link if any!
+            </p>
+          </ng-container>
         </div>
         <div class="form-group">
           <label for="linkedin">Linkedin</label>
-          <input type="text" class="form-control" id="linkedin" placeholder="Linkedin" />
+          <input
+            nbInput
+            type="text"
+            class="form-control"
+            formControlName="linkedin"
+            id="linkedin"
+            placeholder="Linkedin"
+            [status]="f.linkedin.invalid && f.linkedin.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.linkedin.invalid && f.linkedin.touched">
+            <p class="error-message" *ngIf="f.linkedin.errors?.pattern">
+              Please provide a valid LinkedIn link if any!
+            </p>
+          </ng-container>
         </div>
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input type="text" class="form-control" id="phone" placeholder="Phone" />
+          <input
+            nbInput
+            type="text"
+            class="form-control"
+            formControlName="phone"
+            id="phone"
+            placeholder="Phone"
+            [status]="f.phone.invalid && f.phone.touched ? 'danger' : null"
+          />
+          <ng-container *ngIf="f.phone.invalid && f.phone.touched">
+            <p class="error-message" *ngIf="f.phone.errors?.pattern">
+              Please provide a valid phone number if any!
+            </p>
+          </ng-container>
         </div>
         <div class="form-group">
           <label for="country">Country</label>
-          <input type="text" class="form-control" id="country" placeholder="Country" />
+          <input type="text" class="form-control" formControlName="country" id="country" placeholder="Country" />
         </div>
         <div class="form-group">
           <label for="town">Town</label>
-          <input type="text" class="form-control" id="town" placeholder="Town" />
+          <input type="text" class="form-control" formControlName="town" id="town" placeholder="Town" />
         </div>
         <div class="form-group">
           <label for="address">Address</label>
-          <input type="text" class="form-control" id="address" placeholder="Address" />
+          <input type="text" class="form-control" formControlName="address" id="address" placeholder="Address" />
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-danger">Add Student</button>
+          <button type="submit" class="btn btn-danger" [disabled]="this.form.invalid">Add Student</button>
         </div>
       </nb-card-body>
     </nb-card>
