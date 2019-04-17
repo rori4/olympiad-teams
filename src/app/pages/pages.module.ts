@@ -8,10 +8,12 @@ import { ThemeModule } from '../@theme/theme.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { StudentsTableComponent } from './students-table/students-table.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
   StudentsTableComponent,
+  UserProfileComponent,
 ];
 
 @NgModule({

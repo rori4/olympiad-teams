@@ -1,4 +1,4 @@
-<form class="row" [formGroup]="form" (submit)="addStudent()">
+<form class="row" [formGroup]="form" (submit)="addUser()">
   <div class="col-md-6">
     <nb-card>
       <nb-card-body>
@@ -56,6 +56,31 @@
             </p>
           </ng-container>
         </div>
+        <div class="form-group">
+          <label for="roles">User roles (required)</label>
+          <select formControlName="roles" id="roles" multiple class="form-control" placeholder="Please select user roles">
+            <option value="User">User</option>
+            <option value="Instructor">Instructor</option>
+            <option value="Student">Student</option>
+            <option value="Admin">Admin</option>
+          </select>
+          <ng-container *ngIf="f.roles.invalid && f.roles.touched">
+            <p class="error-message" *ngIf="f.roles.errors?.required">
+              Please choose at least one user role!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-group">
+            <label for="subjects">User subjects (required)</label>
+            <select formControlName="subjects" id="subjects" multiple class="form-control" placeholder="Please select user roles">
+              <option *ngFor="let subject of subjects" value="{{subject._id}}">{{subject.name}}</option>
+            </select>
+            <ng-container *ngIf="f.subjects.invalid && f.subjects.touched">
+              <p class="error-message" *ngIf="f.subjects.errors?.required">
+                Please choose at least one subject for the user!
+              </p>
+            </ng-container>
+          </div>
       </nb-card-body>
       <nb-card-footer>
         <h6 class="card-subtitle mb-2 text-muted">The default password of the user will be "12345678"</h6>
@@ -169,8 +194,12 @@
           <label for="address">Address</label>
           <input type="text" class="form-control" formControlName="address" id="address" placeholder="Address" />
         </div>
+        <div class="form-group">
+            <label for="info">Additional info</label>
+            <textarea class="form-control" formControlName="info" id="info" placeholder="Additional Info"></textarea>
+        </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-danger" [disabled]="this.form.invalid">Add Student</button>
+          <button hero type="submit" class="btn btn-danger" [disabled]="this.form.invalid">Add User</button>
         </div>
       </nb-card-body>
     </nb-card>

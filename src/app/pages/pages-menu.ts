@@ -11,39 +11,39 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Everyone',
-        link: '/students',
+        link: '/students/all',
       },
       {
         title: 'Mathematics',
-        link: '/',
+        link: '/students/mathematics',
       },
       {
         title: 'Informatics',
-        link: '/',
+        link: '/students/informatics',
       },
       {
         title: 'Linguistics',
-        link: '/',
+        link: '/students/linguistics',
       },
       {
         title: 'Biology',
-        link: '/',
+        link: '/students/biology',
       },
       {
         title: 'Chemestry',
-        link: '/',
+        link: '/students/chemestry',
       },
       {
         title: 'Physics',
-        link: '/',
+        link: '/students/physics',
       },
       {
         title: 'Astronomy',
-        link: '/',
+        link: '/students/astronomy',
       },
       {
         title: 'Young Physicists',
-        link: '/',
+        link: '/students/young',
       },
     ],
   },
@@ -55,8 +55,13 @@ export const ADMIN_MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Add Student',
+    title: 'Add User',
     icon: 'fa fa-plus',
-    link: '/admin/add-student',
+    link: '/admin/add-user',
+  },
+  {
+    title: 'Edit Subjects',
+    icon: 'fa fa-edit',
+    link: '/admin/edit-subjects',
   },
 ];

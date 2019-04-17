@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>User Information</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="example-container toggle-types">
+              <div class="row align-items-center h-100">
+                <div class="col-md-6">
+                  <nb-user size="xlarge" name="{{user?.fullName}}" title="{{user?.subjectsList}}"> </nb-user>
+                </div>
+                <div class="col-md-6">
+                  <div class="text-right">
+                    <button type="submit" class="btn btn-info" nbButton size="small">Edit User</button>
+                  </div>
+                </div>
+              </div>
+              <div class="container-title"><span>Email:</span> {{user?.email}}</div>
+              <div class="container-title"><span>Roles:</span> {{user?.roles.join(' ')}}</div>
+              <div class="container-title"><span>School:</span> {{user?.school}}</div>
+              <div class="container-title"><span>University:</span> {{user?.university}}</div>
+              <div class="container-title"><span>Work:</span> {{user?.work}}</div>
+              <div class="container-title"><span>Facebook:</span> <a href="{{user?.facebook}}">{{user?.facebook}}</a></div>
+              <div class="container-title">
+                <span>LinkedIn:</span> <a href="{{user?.linkedin}}">{{user?.linkedin}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+    <nb-card>
+      <nb-card-header>Contact Information</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="example-container toggle-types">
+              <div class="container-title"><span>Phone:</span> {{user?.phone}}</div>
+              <div class="container-title"><span>Country:</span> {{user?.country}}</div>
+              <div class="container-title"><span>Town:</span> {{user?.town}}</div>
+              <div class="container-title"><span>Address:</span> {{user?.address}}</div>
+              <div class="container-title"><span>Additional Info:</span> {{user?.info}}</div>
+            </div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-md-6">
+    <nb-card>
+      <nb-card-header>
+        User Medals
+      </nb-card-header>
+      <nb-card-body>
+        <ng2-smart-table
+          [settings]="settings"
+          [source]="source"
+          (deleteConfirm)="onDeleteConfirm($event)"
+          (editConfirm)="onEditConfirm($event)"
+          (createConfirm)="onCreateConfirm($event)"
+        >
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

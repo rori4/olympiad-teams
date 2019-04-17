@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { StudentsService } from './../../@core/services/students.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ngx-students-table',
   templateUrl: './students-table.component.html',
   styleUrls: ['./students-table.component.scss'],
 })
-export class StudentsTableComponent implements OnInit {
+export class StudentsTableComponent implements OnInit, OnDestroy {
   settings = {
-    hideSubHeader: true,
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -24,45 +25,73 @@ export class StudentsTableComponent implements OnInit {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-    },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
+      fullName: {
+        title: 'Name',
+        type: 'html',
       },
-      firstName: {
-        title: 'First Name',
+      school: {
+        title: 'School',
         type: 'string',
       },
-      lastName: {
-        title: 'Last Name',
+      town: {
+        title: 'Town',
         type: 'string',
       },
-      username: {
-        title: 'Username',
-        type: 'string',
+      subjectList: {
+        title: 'Subjects',
+        type: 'html',
       },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      age: {
-        title: 'Age',
-        type: 'number',
+      socialProfiles: {
+        title: 'Social',
+        type: 'html',
+        width: '5%',
       },
     },
   };
   source: LocalDataSource = new LocalDataSource();
-  constructor(private service: StudentsService) {
-    this.service.getStudents().subscribe(data => {
-      console.log(data);
-      this.source.load(data['users']);
+  sourceSub: Subscription;
+  subject: string;
+  constructor(private service: StudentsService, private route: ActivatedRoute) {
+    this.route.url.subscribe(url => {
+      this.retreiveData();
     });
   }
 
-  ngOnInit() {}
+  private modifyData(data: Object) {
+    return data['users'].map((el, i) => {
+      el.subjects.length !== 0
+        ? (el.subjectList = el.subjects
+            .map((el, idx) => {
+              return el.name;
+            })
+            .join(' '))
+        : '';
+      el.fullName !== '' ? (el.fullName = `<a href="/profile/${el._id}">${el.fullName}</a>`) : '';
+      el.facebook !== ''
+        ? (el.facebook = `<a href="${el.facebook}"<i class="table-icon fab fa-facebook"></i></a>`)
+        : '';
+      el.linkedin !== ''
+        ? (el.linkedin = `<a href="${el.linkedin}"<i class="table-icon fab fa-linkedin"></i></a>`)
+        : '';
+      el.socialProfiles = el.facebook + el.linkedin;
+      return el;
+    });
+  }
+
+  ngOnInit() {
+    this.retreiveData();
+  }
+
+  private retreiveData() {
+    this.subject = this.route.snapshot.params.subject;
+    this.sourceSub = this.service.getStudents(this.subject).subscribe(data => {
+      const modifiedResult = this.modifyData(data);
+      this.source.load(modifiedResult);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sourceSub.unsubscribe();
+  }
 }

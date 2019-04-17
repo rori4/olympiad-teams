@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  addStudent(data) {
-    return this.http.post(environment.apiUrl + '/admin/add-student', data);
+  addUser(data) {
+    return this.http.post(environment.apiUrl + '/admin/add-user', data);
   }
 }

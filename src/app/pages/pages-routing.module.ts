@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { StudentsTableComponent } from './students-table/students-table.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,14 @@ const routes: Routes = [
       {
         path: 'students',
         component: StudentsTableComponent,
+      },
+      {
+        path: 'students/:subject',
+        component: StudentsTableComponent,
+      },
+      {
+        path: 'profile/:id',
+        component: UserProfileComponent,
       },
       {
         path: 'dashboard',
