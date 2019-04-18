@@ -20,6 +20,7 @@ export class EditSubjectsComponent implements OnInit, OnDestroy {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -40,9 +41,7 @@ export class EditSubjectsComponent implements OnInit, OnDestroy {
   fetchSub: Subscription;
   addSubjectSub: Subscription;
 
-  constructor(private service: SubjectsService) {
-
-  }
+  constructor(private service: SubjectsService) {}
 
   ngOnInit() {
     this.fetchSub = this.service.getSubjects().subscribe(result => {
@@ -53,23 +52,42 @@ export class EditSubjectsComponent implements OnInit, OnDestroy {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+      this.service.deleteSubject(event.data).subscribe(res => {
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Somehting went wrong!');
+          event.confirm.reject();
+        }
+      });
     } else {
       event.confirm.reject();
     }
   }
   onEditConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+    if (window.confirm('Are you sure you want edit this subject?')) {
+      this.service.editSubject({old: event.data, new: event.newData}).subscribe(res => {
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Please provide a name for the subject!');
+          event.confirm.reject();
+        }
+      });
     } else {
       event.confirm.reject();
     }
   }
 
   onCreateConfirm(event): void {
-    if (window.confirm('Are you sure you want to create this medal?')) {
+    if (window.confirm('Are you sure you want to create this subject?')) {
       this.service.addSubject(event.newData).subscribe(res => {
-        res.success ? event.confirm.resolve() : event.confirm.reject();
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Please provide a name for the subject!');
+          event.confirm.reject();
+        }
       });
     } else {
       event.confirm.reject();

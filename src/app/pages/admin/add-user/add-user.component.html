@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-6 mx-auto">
             <div class="text-right">
-              <button type="submit" class="btn btn-info">Add Photo</button>
+              <button class="btn btn-info" type="button" (click)="addPhoto($event)">Add Photo</button>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@
             <textarea class="form-control" formControlName="info" id="info" placeholder="Additional Info"></textarea>
         </div>
         <div class="text-center">
-          <button hero type="submit" class="btn btn-danger" [disabled]="this.form.invalid">Add User</button>
+          <button hero type="submit" class="btn btn-danger" [disabled]="this.form.invalid">Save User</button>
         </div>
       </nb-card-body>
     </nb-card>

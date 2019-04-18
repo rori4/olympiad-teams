@@ -25,6 +25,11 @@ export class StudentsTableComponent implements OnInit, OnDestroy {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+    },
     columns: {
       fullName: {
         title: 'Name',
@@ -42,10 +47,18 @@ export class StudentsTableComponent implements OnInit, OnDestroy {
         title: 'Subjects',
         type: 'html',
       },
+      medalsCount: {
+        title: 'Medals',
+        type: 'text',
+      },
       socialProfiles: {
         title: 'Social',
         type: 'html',
         width: '5%',
+      },
+      info: {
+        title: 'Additional Info',
+        type: 'text',
       },
     },
   };
@@ -60,6 +73,7 @@ export class StudentsTableComponent implements OnInit, OnDestroy {
 
   private modifyData(data: Object) {
     return data['users'].map((el, i) => {
+      el.medalsCount = el.results.length;
       el.subjects.length !== 0
         ? (el.subjectList = el.subjects
             .map((el, idx) => {

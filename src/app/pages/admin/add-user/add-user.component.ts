@@ -117,11 +117,11 @@ export class AddUserComponent implements OnInit, OnDestroy {
 
   addUser() {
     console.log(this.form);
-    // if (this.form.valid) {
-    //   this.adminService.addUser(this.form.value).subscribe(data => {
-    //     this.router.navigate(['/dashboard']);
-    //   });
-    // }
+    if (this.form.valid) {
+      this.adminService.addUser(this.form.value).subscribe(data => {
+        this.router.navigate(['/students/all']);
+      });
+    }
   }
 
   get f() {
@@ -141,6 +141,11 @@ export class AddUserComponent implements OnInit, OnDestroy {
       });
     }
     return userSubjs;
+  }
+
+  addPhoto(e) {
+    e.preventDefault();
+    console.log('Adding photo');
   }
 
   ngOnDestroy(): void {

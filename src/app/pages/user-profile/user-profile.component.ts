@@ -60,8 +60,7 @@ export class UserProfileComponent implements OnInit {
   user: User;
   sourceSub: Subscription;
   id: string;
-  constructor(private authService: NbAuthService, private userService: UserService, private route: ActivatedRoute) {
-  }
+  constructor(private authService: NbAuthService, private userService: UserService, private route: ActivatedRoute) {}
 
   onDeleteConfirm(event): void {
     console.log(this.user);
@@ -82,7 +81,12 @@ export class UserProfileComponent implements OnInit {
   onCreateConfirm(event): void {
     if (window.confirm('Are you sure you want to create this medal?')) {
       this.userService.addResult(this.id, event.newData).subscribe(res => {
-        res.success ? event.confirm.resolve() : event.confirm.reject();
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Please provide a name of competition and position of the user');
+          event.confirm.reject();
+        }
       });
     } else {
       event.confirm.reject();
@@ -91,9 +95,12 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
-    this.sourceSub = this.userService.getUser(this.id).subscribe((res) => {
+    this.sourceSub = this.userService.getUser(this.id).subscribe(res => {
       this.user = res.data;
-      const subjects = res.data.subjects.slice(0, 3).map(e => e.name).join(' ');
+      const subjects = res.data.subjects
+        .slice(0, 3)
+        .map(e => e.name)
+        .join(' ');
       this.user.subjectsList = subjects;
       this.source.load(res.data.results);
     });
