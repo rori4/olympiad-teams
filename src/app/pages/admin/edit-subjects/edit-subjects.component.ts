@@ -41,15 +41,40 @@ export class EditSubjectsComponent implements OnInit, OnDestroy {
   addSubjectSub: Subscription;
 
   constructor(private service: SubjectsService) {
+
+  }
+
+  ngOnInit() {
     this.fetchSub = this.service.getSubjects().subscribe(result => {
       console.log(result);
       this.source.load(result.data);
     });
   }
 
-  ngOnInit() {}
+  onDeleteConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
+  onEditConfirm(event): void {
+    if (window.confirm('Are you sure you want to delete?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
+  }
 
-  
+  onCreateConfirm(event): void {
+    if (window.confirm('Are you sure you want to create this medal?')) {
+      this.service.addSubject(event.newData).subscribe(res => {
+        res.success ? event.confirm.resolve() : event.confirm.reject();
+      });
+    } else {
+      event.confirm.reject();
+    }
+  }
 
   ngOnDestroy(): void {
     this.fetchSub !== undefined ? this.fetchSub.unsubscribe() : null;

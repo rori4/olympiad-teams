@@ -1,4 +1,5 @@
 export interface User {
+  _id: string;
   email: string;
   fullName: string;
   profilePic: string;
@@ -23,11 +24,13 @@ export interface User {
 }
 
 export interface Result {
+  _id: string;
   olympiad: string;
   position: number;
 }
 
 export interface Subject {
+  _id: string;
   name: string;
   currentInstructor: User;
   previousInstructors: Array<User>;

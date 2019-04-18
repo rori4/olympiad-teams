@@ -11,6 +11,10 @@
       height: calc(2.25rem + 2px);
     }
 
+    .input-group-addon, .nb-theme-default .form-control {
+      padding: 0;
+    }
+
     .container-title {
       color: nb-theme(color-fg);
       font-family: nb-theme(font-secondary);

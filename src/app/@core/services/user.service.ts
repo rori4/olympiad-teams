@@ -16,7 +16,7 @@ export class UserService {
     return this.http.get<ServerResponse>(environment.apiUrl + '/users/profile', { params: params });
   }
 
-  addResult(id, result) {
-    return this.http.post(environment.apiUrl + '/users/result', { userId: id, result });
+  addResult(id, result): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(environment.apiUrl + '/users/result', { userId: id, result });
   }
 }

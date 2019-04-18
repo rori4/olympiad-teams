@@ -8,6 +8,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Students',
     icon: 'fa fa-medal',
+    expanded: true,
     children: [
       {
         title: 'Everyone',

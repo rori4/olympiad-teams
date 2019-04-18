@@ -4,7 +4,7 @@
       <nb-card-body>
         <div class="row align-items-center h-100">
           <div class="col-md-6">
-            <nb-user size="xlarge" name="John Doe" title="Engineer"> </nb-user>
+            <nb-user size="xlarge" name="{{form.value?.fullName}}" title="{{currentSubjects}}"> </nb-user>
           </div>
           <div class="col-md-6 mx-auto">
             <div class="text-right">
@@ -36,6 +36,7 @@
         </div>
         <div class="form-group">
           <label for="email">Email address (required)</label>
+          <input type="hidden" id="_id" formContolName="_id">
           <input
             nbInput
             type="email"

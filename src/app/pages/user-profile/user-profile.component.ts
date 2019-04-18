@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../@core/services/user.service';
 import { User } from '../../@core/models/user';
+import { NbAuthService } from '@nebular/auth';
 
 @Component({
   selector: 'ngx-user-profile',
@@ -59,7 +60,7 @@ export class UserProfileComponent implements OnInit {
   user: User;
   sourceSub: Subscription;
   id: string;
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private authService: NbAuthService, private userService: UserService, private route: ActivatedRoute) {
   }
 
   onDeleteConfirm(event): void {
@@ -79,8 +80,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   onCreateConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+    if (window.confirm('Are you sure you want to create this medal?')) {
+      this.userService.addResult(this.id, event.newData).subscribe(res => {
+        res.success ? event.confirm.resolve() : event.confirm.reject();
+      });
     } else {
       event.confirm.reject();
     }
