@@ -19,4 +19,12 @@ export class UserService {
   addResult(id, result): Observable<ServerResponse> {
     return this.http.post<ServerResponse>(environment.apiUrl + '/users/result', { userId: id, result });
   }
+
+  editResult(data): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(environment.apiUrl + '/results/edit', data);
+  }
+
+  deleteResult(data): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(environment.apiUrl + '/results/delete', data);
+  }
 }

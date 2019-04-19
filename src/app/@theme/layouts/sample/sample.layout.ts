@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { delay, withLatestFrom, takeWhile } from 'rxjs/operators';
 import {
   NbMediaBreakpoint,
@@ -18,13 +18,14 @@ import { StateService } from '../../../@core/utils';
   template: `
     <nb-layout [center]="layout.id === 'center-column'" windowMode>
       <nb-layout-header fixed>
-        <ngx-header [position]="sidebar.id === 'start' ? 'normal': 'inverse'"></ngx-header>
+        <ngx-header
+          (onStatusChange)="childStatusChanged($event)"
+          [position]="sidebar.id === 'start' ? 'normal' : 'inverse'"
+        >
+        </ngx-header>
       </nb-layout-header>
 
-      <nb-sidebar class="menu-sidebar"
-                   tag="menu-sidebar"
-                   responsive
-                   [end]="sidebar.id === 'end'">
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive [end]="sidebar.id === 'end'">
         <nb-sidebar-header *ngIf="currentTheme !== 'corporate'">
           <a href="#" class="btn btn-hero-success main-btn">
             <i class="ion ion-social-github"></i> <span>Support Us</span>
@@ -52,7 +53,7 @@ import { StateService } from '../../../@core/utils';
   `,
 })
 export class SampleLayoutComponent implements OnDestroy {
-
+  @Output() onStatusChange = new EventEmitter<boolean>();
   subMenu: NbMenuItem[] = [
     {
       title: 'PAGE LEVEL MENU',
@@ -101,40 +102,49 @@ export class SampleLayoutComponent implements OnDestroy {
 
   currentTheme: string;
 
-  constructor(protected stateService: StateService,
-              protected menuService: NbMenuService,
-              protected themeService: NbThemeService,
-              protected bpService: NbMediaBreakpointsService,
-              protected sidebarService: NbSidebarService) {
-    this.stateService.onLayoutState()
+  constructor(
+    protected stateService: StateService,
+    protected menuService: NbMenuService,
+    protected themeService: NbThemeService,
+    protected bpService: NbMediaBreakpointsService,
+    protected sidebarService: NbSidebarService,
+  ) {
+    this.stateService
+      .onLayoutState()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((layout: string) => this.layout = layout);
+      .subscribe((layout: string) => (this.layout = layout));
 
-    this.stateService.onSidebarState()
+    this.stateService
+      .onSidebarState()
       .pipe(takeWhile(() => this.alive))
       .subscribe((sidebar: string) => {
         this.sidebar = sidebar;
       });
 
     const isBp = this.bpService.getByName('is');
-    this.menuService.onItemSelect()
+    this.menuService
+      .onItemSelect()
       .pipe(
         takeWhile(() => this.alive),
         withLatestFrom(this.themeService.onMediaQueryChange()),
         delay(20),
       )
       .subscribe(([item, [bpFrom, bpTo]]: [any, [NbMediaBreakpoint, NbMediaBreakpoint]]) => {
-
         if (bpTo.width <= isBp.width) {
           this.sidebarService.collapse('menu-sidebar');
         }
       });
 
-    this.themeService.getJsTheme()
+    this.themeService
+      .getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.currentTheme = theme.name;
-    });
+      });
+  }
+
+  childStatusChanged(changed: boolean) {
+    this.onStatusChange.emit(changed);
   }
 
   ngOnDestroy() {

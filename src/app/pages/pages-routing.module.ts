@@ -26,6 +26,10 @@ const routes: Routes = [
         component: StudentsTableComponent,
       },
       {
+        path: 'search/:search',
+        component: StudentsTableComponent,
+      },
+      {
         path: 'profile/:id',
         component: UserProfileComponent,
       },

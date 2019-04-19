@@ -13,6 +13,11 @@ import { NbAuthService } from '@nebular/auth';
 })
 export class UserProfileComponent implements OnInit {
   settings = {
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -23,6 +28,7 @@ export class UserProfileComponent implements OnInit {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -56,6 +62,7 @@ export class UserProfileComponent implements OnInit {
       },
     },
   };
+  adminSettings;
   source: LocalDataSource = new LocalDataSource();
   user: User;
   sourceSub: Subscription;
@@ -64,22 +71,36 @@ export class UserProfileComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     console.log(this.user);
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+    if (window.confirm('Are you sure you want to delete this result?')) {
+      this.userService.deleteResult(event.data).subscribe(res => {
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Please provide a name of competition and position of the user');
+          event.confirm.reject();
+        }
+      });
     } else {
       event.confirm.reject();
     }
   }
   onEditConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+    if (window.confirm('Are you sure you want to edit this result?')) {
+      this.userService.editResult({ old: event.data, new: event.newData }).subscribe(res => {
+        if (res.success) {
+          event.confirm.resolve();
+        } else {
+          alert('Please provide a name of competition and position of the user');
+          event.confirm.reject();
+        }
+      });
     } else {
       event.confirm.reject();
     }
   }
 
   onCreateConfirm(event): void {
-    if (window.confirm('Are you sure you want to create this medal?')) {
+    if (window.confirm('Are you sure you want to create this result?')) {
       this.userService.addResult(this.id, event.newData).subscribe(res => {
         if (res.success) {
           event.confirm.resolve();
@@ -94,6 +115,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initAdminSettings();
     this.id = this.route.snapshot.params.id;
     this.sourceSub = this.userService.getUser(this.id).subscribe(res => {
       this.user = res.data;
@@ -104,5 +126,15 @@ export class UserProfileComponent implements OnInit {
       this.user.subjectsList = subjects;
       this.source.load(res.data.results);
     });
+  }
+
+  private initAdminSettings() {
+    this.adminSettings = {};
+    Object.assign(this.adminSettings, this.settings);
+    this.adminSettings.actions = {
+      add: true,
+      edit: true,
+      delete: true,
+    };
   }
 }

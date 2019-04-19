@@ -9,7 +9,12 @@ export class StudentsService {
   constructor(private http: HttpClient) {}
 
   getStudents(subject) {
-    let params = new HttpParams().set('subject', subject);
+    const params = new HttpParams().set('subject', subject);
     return this.http.get(environment.apiUrl + '/students/list', {params: params});
+  }
+
+  searchStudents(search) {
+    const params = new HttpParams().set('search', search);
+    return this.http.get(environment.apiUrl + '/students/search', {params: params});
   }
 }

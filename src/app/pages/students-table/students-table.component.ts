@@ -99,10 +99,18 @@ export class StudentsTableComponent implements OnInit, OnDestroy {
 
   private retreiveData() {
     this.subject = this.route.snapshot.params.subject;
-    this.sourceSub = this.service.getStudents(this.subject).subscribe(data => {
-      const modifiedResult = this.modifyData(data);
-      this.source.load(modifiedResult);
-    });
+    const search = this.route.snapshot.params.search;
+    if (!search) {
+      this.sourceSub = this.service.getStudents(this.subject).subscribe(data => {
+        const modifiedResult = this.modifyData(data);
+        this.source.load(modifiedResult);
+      });
+    } else {
+      this.sourceSub = this.service.searchStudents(search).subscribe(data => {
+        const modifiedResult = this.modifyData(data);
+        this.source.load(modifiedResult);
+      });
+    }
   }
 
   ngOnDestroy(): void {

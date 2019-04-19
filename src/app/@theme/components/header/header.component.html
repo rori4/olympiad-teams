@@ -1,6 +1,4 @@
-<div class="header-container"
-     [class.left]="position === 'normal'"
-     [class.right]="position === 'inverse'">
+<div class="header-container" [class.left]="position === 'normal'" [class.right]="position === 'inverse'">
   <div class="logo-containter">
     <a (click)="toggleSidebar()" href="#" class="navigation"><i class="nb-menu"></i></a>
     <div class="logo" (click)="goToHome()">OLYMPIC <span>TEAMS ASSOCIATION</span></div>
@@ -8,13 +6,12 @@
 </div>
 
 <div class="header-container">
-  <nb-actions
-    size="medium"
-    [class.right]="position === 'normal'"
-    [class.left]="position === 'inverse'">
-    <nb-action *nbIsGranted="['view', 'user']" >
+  <nb-actions size="medium" [class.right]="position === 'normal'" [class.left]="position === 'inverse'">
+    <nb-action *nbIsGranted="['view', 'userProfile']">
       <nb-user [nbContextMenu]="userMenu" [name]="user?.name" [picture]="user?.picture"></nb-user>
     </nb-action>
+    <nb-action *nbIsGranted="['view', 'guest']" link="/auth/register" class="control-item" icon="nb-person"></nb-action>
+    <nb-action *nbIsGranted="['view', 'guest']" link="/auth/login" class="control-item" icon="nb-locked"></nb-action>
     <nb-action class="control-item">
       <nb-search type="rotate-layout" (click)="startSearch()"></nb-search>
     </nb-action>

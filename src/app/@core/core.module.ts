@@ -5,12 +5,7 @@ import { NbSecurityModule, NbRoleProvider } from '@nebular/security';
 import { of as observableOf } from 'rxjs';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
-import {
-  AnalyticsService,
-  LayoutService,
-  PlayerService,
-  StateService,
-} from './utils';
+import { AnalyticsService, LayoutService, PlayerService, StateService } from './utils';
 import { UserData } from './data/users';
 import { ElectricityData } from './data/electricity';
 import { SmartTableData } from './data/smart-table';
@@ -52,6 +47,11 @@ import { VisitorsAnalyticsService } from './mock/visitors-analytics.service';
 import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
 import { environment } from '../../environments/environment';
+import { RoleProvider } from './services/role.provider';
+
+import { LoginGuard } from './guards/login.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const socialLinks = [
   {
@@ -111,14 +111,14 @@ export const NB_CORE_PROVIDERS = [
           class: NbAuthJWTToken,
         },
         baseEndpoint: environment.apiUrl,
-         login: {
-           endpoint: '/auth/login',
-           method: 'post',
-         },
-         register: {
-           endpoint: '/auth/signup',
-           method: 'post',
-         },
+        login: {
+          endpoint: '/auth/login',
+          method: 'post',
+        },
+        register: {
+          endpoint: '/auth/signup',
+          method: 'post',
+        },
       }),
     ],
     forms: {},
@@ -126,11 +126,18 @@ export const NB_CORE_PROVIDERS = [
 
   NbSecurityModule.forRoot({
     accessControl: {
-      guest: {
-        view: '*',
+      Guest: {
+        view: 'guest',
       },
-      user: {
-        parent: 'guest',
+      User: {
+        view: ['userProfile'],
+      },
+      Student: {
+        parent: 'User',
+      },
+      Admin: {
+        parent: 'User',
+        view: ['userProfile', 'contactInfo', 'adminPanel'],
         create: '*',
         edit: '*',
         remove: '*',
@@ -139,21 +146,21 @@ export const NB_CORE_PROVIDERS = [
   }).providers,
 
   {
-    provide: NbRoleProvider, useClass: NbSimpleRoleProvider,
+    provide: NbRoleProvider,
+    useClass: RoleProvider,
   },
   AnalyticsService,
   LayoutService,
   PlayerService,
   StateService,
+  LoginGuard,
+  AuthGuard,
+  AdminGuard,
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  exports: [
-    NbAuthModule,
-  ],
+  imports: [CommonModule],
+  exports: [NbAuthModule],
   declarations: [],
 })
 export class CoreModule {
@@ -164,9 +171,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return <ModuleWithProviders>{
       ngModule: CoreModule,
-      providers: [
-        ...NB_CORE_PROVIDERS,
-      ],
+      providers: [...NB_CORE_PROVIDERS],
     };
   }
 }

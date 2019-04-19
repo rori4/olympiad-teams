@@ -8,11 +8,13 @@ import {
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
 } from '@nebular/auth';
+import { LoginGuard } from './@core/guards/login.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     component: NbAuthComponent,
+    canActivate: [LoginGuard],
     children: [
       {
         path: '',
