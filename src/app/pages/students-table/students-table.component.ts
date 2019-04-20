@@ -59,6 +59,7 @@ export class StudentsTableComponent implements OnInit, OnDestroy {
       info: {
         title: 'Additional Info',
         type: 'text',
+        width: '10%',
       },
     },
   };
