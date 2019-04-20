@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { NbMediaBreakpoint, NbMediaBreakpointsService, NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators';
 import { CountryOrderData } from '../../../@core/data/country-order';
+import { StatisticsService } from '../../../@core/services/statistics.service';
 
 @Component({
   selector: 'ngx-country-orders',
@@ -10,20 +11,19 @@ import { CountryOrderData } from '../../../@core/data/country-order';
     <nb-card [size]="breakpoint.width >= breakpoints.md ? 'medium' : 'xxlarge'">
       <nb-card-header>Top 5 Towns With Students</nb-card-header>
       <nb-card-body>
-        <ngx-country-orders-map (select)="selectCountryById($event)"
-                                countryId="BGR">
-        </ngx-country-orders-map>
-        <ngx-country-orders-chart [countryName]="countryName"
-                                  [data]="countryData"
-                                  [labels]="countriesCategories"
-                                  maxValue="20">
+        <ngx-country-orders-map (select)="selectCountryById($event)" countryId="BGR"> </ngx-country-orders-map>
+        <ngx-country-orders-chart
+          [countryName]="countryName"
+          [data]="countryData"
+          [labels]="countriesCategories"
+          maxValue="20"
+        >
         </ngx-country-orders-chart>
       </nb-card-body>
     </nb-card>
   `,
 })
 export class CountryOrdersComponent implements OnDestroy {
-
   private alive = true;
 
   countryName = '';
@@ -32,30 +32,49 @@ export class CountryOrdersComponent implements OnDestroy {
   breakpoint: NbMediaBreakpoint = { name: '', width: 0 };
   breakpoints: any;
 
-  constructor(private themeService: NbThemeService,
-              private breakpointService: NbMediaBreakpointsService,
-              private countryOrderService: CountryOrderData) {
+  constructor(
+    private themeService: NbThemeService,
+    private breakpointService: NbMediaBreakpointsService,
+    private countryOrderService: CountryOrderData,
+    private statisticsService: StatisticsService,
+  ) {
     this.breakpoints = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
+    this.themeService
+      .onMediaQueryChange()
       .pipe(takeWhile(() => this.alive))
       .subscribe(([oldValue, newValue]) => {
         this.breakpoint = newValue;
       });
-    this.countryOrderService.getCountriesCategories()
+      this.statisticsService
+      .getStudentsByTown()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((countriesCategories) => {
-        this.countriesCategories = countriesCategories;
+      .subscribe(res => {
+        this.countriesCategories = res.data.towns;
+        this.countryData = res.data.stats;
       });
+    // this.countryOrderService
+    //   .getCountriesCategories()
+    //   .pipe(takeWhile(() => this.alive))
+    //   .subscribe(countriesCategories => {
+    //     this.countriesCategories = countriesCategories;
+    //   });
   }
 
   selectCountryById(countryName: string) {
     this.countryName = countryName;
-
-    this.countryOrderService.getCountriesCategoriesData(countryName)
+    this.statisticsService
+      .getStudentsByTown()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((countryData) => {
-        this.countryData = countryData;
+      .subscribe(res => {
+        this.countriesCategories = res.data.towns;
+        this.countryData = res.data.stats;
       });
+    // this.countryOrderService
+    //   .getCountriesCategoriesData(countryName)
+    //   .pipe(takeWhile(() => this.alive))
+    //   .subscribe(countryData => {
+    //     this.countryData = countryData;
+    //   });
   }
 
   ngOnDestroy() {
