@@ -14,12 +14,7 @@ export class StatisticsService {
     return this.http.get<ServerResponse>(environment.apiUrl + '/statistics/studentsByTown');
   }
 
-  getTownChartLabels(): Observable<string[]> {
-    return this.http.get<string[]>(environment.apiUrl + '/statistics/townChartLabels');
-  }
-
-  getTownChartData(): Observable<number[]> {
-    return this.http.get<number[]>(environment.apiUrl + '/statistics/townChartData');
-
+  getStudentsProgressStatistics(): Observable<ServerResponse> {
+    return this.http.get<ServerResponse>(environment.apiUrl + '/statistics/studentsProgress');
   }
 }
