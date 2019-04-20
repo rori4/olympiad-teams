@@ -8,7 +8,7 @@
 <div class="header-container">
   <nb-actions size="medium" [class.right]="position === 'normal'" [class.left]="position === 'inverse'">
     <nb-action *nbIsGranted="['view', 'userProfile']">
-      <nb-user [nbContextMenu]="userMenu" [name]="user?.name" [picture]="user?.picture"></nb-user>
+      <nb-user [nbContextMenu]="userMenu" [name]="user?.fullName" [picture]="user?.profilePic"></nb-user>
     </nb-action>
     <nb-action *nbIsGranted="['view', 'guest']" link="/auth/register" class="control-item" icon="nb-person"></nb-action>
     <nb-action *nbIsGranted="['view', 'guest']" link="/auth/login" class="control-item" icon="nb-locked"></nb-action>
