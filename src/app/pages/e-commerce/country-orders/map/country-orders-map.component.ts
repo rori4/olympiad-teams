@@ -27,11 +27,11 @@ export class CountryOrdersMapComponent implements OnDestroy {
   selectedCountry;
 
   options = {
-    zoom: 2,
+    zoom: 6,
     minZoom: 2,
     maxZoom: 6,
     zoomControl: false,
-    center: L.latLng({lat: 38.991709, lng: -76.886109}),
+    center: L.latLng({lat: 42.7249925, lng: 25.4833039}),
     maxBounds: new L.LatLngBounds(
       new L.LatLng(-89.98155760646617, -180),
       new L.LatLng(89.99346179538875, 180),
@@ -84,7 +84,7 @@ export class CountryOrdersMapComponent implements OnDestroy {
     layer.on({
       mouseover: (e) => this.highlightFeature(e.target),
       mouseout: (e) => this.moveout(e.target),
-      click: (e) => this.selectFeature(e.target),
+      // click: (e) => this.selectFeature(e.target),
     });
   }
 

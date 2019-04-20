@@ -7,6 +7,7 @@ import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { StudentsTableComponent } from './students-table/students-table.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AddUserComponent } from './admin/add-user/add-user.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'profile/:id',
         component: UserProfileComponent,
+      },
+      {
+        path: 'myProfile',
+        component: AddUserComponent,
       },
       {
         path: 'dashboard',

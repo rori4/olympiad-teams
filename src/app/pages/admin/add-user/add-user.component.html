@@ -57,8 +57,8 @@
             </p>
           </ng-container>
         </div>
-        <div class="form-group">
-          <label for="roles">User roles (required)</label>
+        <div class="form-group" *nbIsGranted="['edit', 'roles']">
+          <label for="roles">User roles</label>
           <select formControlName="roles" id="roles" multiple class="form-control" placeholder="Please select user roles">
             <option value="User">User</option>
             <option value="Instructor">Instructor</option>
@@ -71,8 +71,8 @@
             </p>
           </ng-container>
         </div>
-        <div class="form-group">
-            <label for="subjects">User subjects (required)</label>
+        <div class="form-group" *nbIsGranted="['edit', 'subjects']">
+            <label for="subjects">User subjects</label>
             <select formControlName="subjects" id="subjects" multiple class="form-control" placeholder="Please select user roles">
               <option *ngFor="let subject of subjects" value="{{subject._id}}">{{subject.name}}</option>
             </select>
@@ -83,7 +83,7 @@
             </ng-container>
           </div>
       </nb-card-body>
-      <nb-card-footer>
+      <nb-card-footer *nbIsGranted="['edit', 'roles']">
         <h6 class="card-subtitle mb-2 text-muted">The default password of the user will be "12345678"</h6>
       </nb-card-footer>
     </nb-card>

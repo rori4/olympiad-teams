@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SubjectsService } from '../../../@core/services/subjects.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../../@core/models/user';
+import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-add-user',
@@ -22,6 +24,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
     private subjectService: SubjectsService,
     private router: Router,
     private route: ActivatedRoute,
+    private authService: NbAuthService,
   ) {}
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
@@ -29,6 +32,15 @@ export class AddUserComponent implements OnInit, OnDestroy {
       this.subjects = result.data;
     });
     this.initiateFromValidators();
+    let url = this.router.url;
+    if (this.router.url === '/myProfile') {
+      this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+        if (token.isValid()) {
+          this.id = token.getPayload()['sub'];
+          this.fillFormEditUser();
+        }
+      });
+    }
     this.fillFormEditUser();
   }
 
@@ -46,8 +58,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
           ),
         ],
       ],
-      roles: ['', Validators.required],
-      subjects: ['', Validators.required],
+      roles: ['', Validators.nullValidator],
+      subjects: ['', Validators.nullValidator],
       school: ['', Validators.nullValidator],
       educationPeriod: ['', Validators.nullValidator],
       university: ['', Validators.nullValidator],
@@ -93,7 +105,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
         };
         const subjectFormated = user.subjects.map(a => a._id);
         this.form.setValue({
-          _id: res.data._id,
+          _id: this.id,
           fullName: user.fullName,
           email: user.email,
           roles: user.roles,

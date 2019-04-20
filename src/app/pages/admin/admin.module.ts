@@ -10,5 +10,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 @NgModule({
   imports: [ThemeModule, CommonModule, AdminRoutingModule, Ng2SmartTableModule],
   declarations: [AdminComponent, AddUserComponent, EditSubjectsComponent],
+  exports: [AddUserComponent],
 })
 export class AdminModule {}

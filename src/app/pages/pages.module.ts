@@ -9,6 +9,7 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { StudentsTableComponent } from './students-table/students-table.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminModule } from './admin/admin.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -19,6 +20,7 @@ const PAGES_COMPONENTS = [
 @NgModule({
   imports: [
     PagesRoutingModule,
+    AdminModule,
     ThemeModule,
     DashboardModule,
     ECommerceModule,

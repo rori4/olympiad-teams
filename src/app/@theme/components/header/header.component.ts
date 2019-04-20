@@ -43,8 +43,7 @@ export class HeaderComponent implements OnInit {
       this.onStatusChange.emit(true);
       this.router.navigate(['/']);
     } else if (title === 'Profile') {
-      // Do something on Profile
-      console.log('Profile Clicked ');
+      this.router.navigate(['/myProfile']);
     }
   }
 

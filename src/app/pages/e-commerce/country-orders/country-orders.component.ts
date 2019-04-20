@@ -8,10 +8,10 @@ import { CountryOrderData } from '../../../@core/data/country-order';
   styleUrls: ['./country-orders.component.scss'],
   template: `
     <nb-card [size]="breakpoint.width >= breakpoints.md ? 'medium' : 'xxlarge'">
-      <nb-card-header>Country Orders Statistics</nb-card-header>
+      <nb-card-header>Top 5 Towns With Students</nb-card-header>
       <nb-card-body>
         <ngx-country-orders-map (select)="selectCountryById($event)"
-                                countryId="USA">
+                                countryId="BGR">
         </ngx-country-orders-map>
         <ngx-country-orders-chart [countryName]="countryName"
                                   [data]="countryData"
